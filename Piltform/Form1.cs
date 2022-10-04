@@ -12,6 +12,7 @@ namespace Piltform
 {
     public partial class Pildid : Form
     {
+        TreeView puu;
         TableLayoutPanel tableLayoutPanel;
         PictureBox pictureBox;
         CheckBox checkBox;
@@ -21,15 +22,32 @@ namespace Piltform
         Button clear_btn;
         Button show_btn;
         FlowLayoutPanel flowLayoutPanel;
-
+        MathQuiz mathQuiz;
 
 
         public Pildid()
         {
-            this.Size = new System.Drawing.Size(900, 500);
-            this.Text = "Pildid";
-            tableLayoutPanel = new TableLayoutPanel
+            Text = "Minu oma vorm koos elementidega"; //название формы
+            puu = new TreeView();
+            puu.Dock = DockStyle.Right;
+            puu.Location = new Point(0, 0);
+            TreeNode oksad = new TreeNode("Mangud");
+            oksad.Nodes.Add(new TreeNode("Pildid"));
+            oksad.Nodes.Add(new TreeNode("MangQuiz"));
+
+
+            puu.AfterSelect += Puu_AfterSelect;
+            puu.Nodes.Add(oksad);
+            this.Controls.Add(puu);
+        }
+        private void Puu_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node.Text == "Pildid")
             {
+                Text = "Pilti vaatamine";
+                this.Size = new System.Drawing.Size(1280, 500);
+                tableLayoutPanel = new TableLayoutPanel
+                {
                 AutoSize = true,
                 ColumnCount = 2,
                 RowCount = 2,
@@ -130,33 +148,24 @@ namespace Piltform
                 Filter = "JPEG Files (*.jpg)|*.jpg|PNG Files (*.png)|*.png|BMP Files (*.bmp)|*.bmp|All file" + "s (*.*)|*.*",
 
             };
-
-
-
-
-        }
-       
-
-        private void Pildid_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void bgColor_Click(object sender, EventArgs e)
-        {
-            if (colordialog.ShowDialog() == DialogResult.OK)
+                Button[] buttons = { clear, showPicture, bgColor };
+                flowLayoutPanel = new FlowLayoutPanel
+                {
+                    Dock = DockStyle.Fill,
+                    FlowDirection = FlowDirection.LeftToRight,
+                };
+                flowLayoutPanel.Controls.AddRange(buttons);
+                tableLayoutPanel.Controls.Add(flowLayoutPanel, 1, 1);
+                this.Controls.Add(tableLayoutPanel);
+            }
+            else if (e.Node.Text == "MangQuiz")
             {
-                pictureBox.BackColor = colordialog.Color;
+                MathQuiz nupp = new MathQuiz("Math Quiz");
+                nupp.ShowDialog();
             }
         }
-        private void clear_Click(object sender, EventArgs e)
-        {
-            pictureBox.Image = null;
-        }
+
+
         private void showPicture_Click(object sender, EventArgs e)
         {
             if (openfiledialog.ShowDialog() == DialogResult.OK)
@@ -164,6 +173,17 @@ namespace Piltform
                 pictureBox.Load(openfiledialog.FileName);
             }
         }
+
+        private void MinuVorm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void clear_Click(object sender, EventArgs e)
+        {
+            pictureBox.Image = null;
+        }
+
         private void CheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox.Checked)
@@ -172,5 +192,14 @@ namespace Piltform
             }
             else { pictureBox.SizeMode = PictureBoxSizeMode.Normal; }
         }
+
+        private void bgColor_Click(object sender, EventArgs e)
+        {
+            if (colordialog.ShowDialog() == DialogResult.OK)
+            {
+                pictureBox.BackColor = colordialog.Color;
+            }
+        }
     }
+
 }

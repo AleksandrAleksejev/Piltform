@@ -1,4 +1,6 @@
-﻿namespace Piltform
+﻿using System;
+
+namespace Piltform
 {
     partial class Pildid
     {
@@ -79,6 +81,9 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private EventHandler pictureBox2_Click;
+
+        public EventHandler Pildid_Load { get; private set; }
     }
 }
 
