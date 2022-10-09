@@ -60,14 +60,13 @@ namespace Piltform
             this.pictureBox2.Size = new System.Drawing.Size(562, 428);
             this.pictureBox2.TabIndex = 0;
             this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click_1);
             // 
             // Pildid
             // 
             this.ClientSize = new System.Drawing.Size(567, 480);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Name = "Pildid";
-            this.Load += new System.EventHandler(this.Pildid_Load);
             this.tableLayoutPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);

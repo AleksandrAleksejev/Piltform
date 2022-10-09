@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using CheckBox = System.Windows.Forms.CheckBox;
 
 namespace Piltform
 {
@@ -34,6 +38,7 @@ namespace Piltform
             TreeNode oksad = new TreeNode("Mangud");
             oksad.Nodes.Add(new TreeNode("Pildid"));
             oksad.Nodes.Add(new TreeNode("MangQuiz"));
+            oksad.Nodes.Add(new TreeNode("MatchingGame"));
 
 
             puu.AfterSelect += Puu_AfterSelect;
@@ -163,6 +168,11 @@ namespace Piltform
                 MathQuiz nupp = new MathQuiz("Math Quiz");
                 nupp.ShowDialog();
             }
+            else if (e.Node.Text == "MatchingGame") //matemaatikaviktoriini mängu käivitamine eraldi aknas
+            {
+                MatchingGame el = new MatchingGame("Matching Game");
+                el.ShowDialog();
+            }
         }
 
 
@@ -175,6 +185,11 @@ namespace Piltform
         }
 
         private void MinuVorm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox2_Click_1(object sender, EventArgs e)
         {
 
         }
