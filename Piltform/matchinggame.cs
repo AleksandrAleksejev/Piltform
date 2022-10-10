@@ -20,18 +20,18 @@ namespace Piltform
         Timer timer1 = new Timer { Interval = 750 };
         List<string> icons = new List<string>() //väärtuste loend, mis ilmuvad hiljem
         {
-            "m", "m", "k", "k", "N", "N", "t", "t",
-            "Z", "Z", "J", "J", "E", "E", "S", "S"
+            "!", "!", "N", "N", ",", ",", "k", "k",
+            "b", "b", "v", "v", "w", "w", "z", "z"
         };
         public MatchingGame(string title)
         {
             CenterToScreen();
             timer1.Tick += Tick;
             Text = "Matching game";
-            ClientSize = new Size(1200, 550);
+            ClientSize = new Size(1200, 600);
             table = new TableLayoutPanel
             {
-                BackColor = Color.White,
+                BackColor = Color.Pink,
                 Dock = DockStyle.Fill,
                 CellBorderStyle = TableLayoutPanelCellBorderStyle.Inset,
                 RowCount = 4,
@@ -48,7 +48,7 @@ namespace Piltform
 
                     Label lbl = new Label
                     {
-                        BackColor = Color.LightCyan,
+                        BackColor = Color.Pink,
                         AutoSize = false,
                         Dock = DockStyle.Fill,
                         TextAlign = ContentAlignment.MiddleCenter,

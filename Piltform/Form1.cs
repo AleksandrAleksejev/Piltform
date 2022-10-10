@@ -20,11 +20,9 @@ namespace Piltform
         TableLayoutPanel tableLayoutPanel;
         PictureBox pictureBox;
         CheckBox checkBox;
-        Button close_btn, bgColor, clear, showPicture;
+        Button close_btn, bgColor, clear, showPicture,Paint;
         ColorDialog colordialog;
         OpenFileDialog openfiledialog;
-        Button clear_btn;
-        Button show_btn;
         FlowLayoutPanel flowLayoutPanel;
         MathQuiz mathQuiz;
 
@@ -146,7 +144,18 @@ namespace Piltform
             tableLayoutPanel.Controls.Add(showPicture);
             this.showPicture.Click += new System.EventHandler(this.showPicture_Click);
 
-            openfiledialog = new OpenFileDialog
+            //Paint = new Button
+            //{
+            //    AutoSize = true,
+            //    TabIndex = 3,
+            //    Text = "Näita pilti",
+            //    UseVisualStyleBackColor = true,
+
+            //};
+            //    tableLayoutPanel.Controls.Add(showPicture);
+            //    this.showPicture.Click += new System.EventHandler(this.showPicture_Click);
+
+                openfiledialog = new OpenFileDialog
             {
                 RestoreDirectory = true,
                 Title = "Browse Text Files",
