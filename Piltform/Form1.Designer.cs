@@ -81,6 +81,7 @@ namespace Piltform
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.PictureBox pictureBox2;
         private EventHandler pictureBox2_Click;
+        private EventHandler pictureBox2_Click_1;
 
         public EventHandler Pildid_Load { get; private set; }
     }

@@ -20,12 +20,15 @@ namespace Piltform
         TableLayoutPanel tableLayoutPanel;
         PictureBox pictureBox;
         CheckBox checkBox;
-        Button close_btn, bgColor, clear, showPicture, gray;
+        Button close_btn, bgColor, clear, showPicture, gray, start, stop;
         ColorDialog colordialog;
         OpenFileDialog openfiledialog;
-        FlowLayoutPanel flowLayoutPanel;
+        FlowLayoutPanel flowLayoutPanel, flowlayoutpanel1;
         MathQuiz mathQuiz;
         Bitmap _currentBitmap;
+        FolderBrowserDialog fbd;
+        Timer timer1;
+        int imgNum = 1;
 
 
         public Pildid()
@@ -129,16 +132,16 @@ namespace Piltform
             tableLayoutPanel.Controls.Add(bgColor);
             this.bgColor.Click += new System.EventHandler(this.bgColor_Click);
 
-                gray = new Button
-                {
-                    AutoSize = true,
-                    Location = new Point(373, 3),
-                    Size = new Size(75, 23),
-                    TabIndex = 5,
-                    Text = "Change photo color to Gray",
-                    UseVisualStyleBackColor = true,
-                };
-                gray.Click += new EventHandler(Gray_Click);
+               // gray = new Button
+               // {
+                //    AutoSize = true,
+               //     Location = new Point(373, 3),
+               //     Size = new Size(75, 23),
+               //     TabIndex = 5,
+               //     Text = "Change photo color to Gray",
+               //     UseVisualStyleBackColor = true,
+               // };
+               // gray.Click += new EventHandler(Gray_Click);
 
 
                 clear = new Button
@@ -162,16 +165,58 @@ namespace Piltform
             tableLayoutPanel.Controls.Add(showPicture);
             this.showPicture.Click += new System.EventHandler(this.showPicture_Click);
 
-            //Paint = new Button
-            //{
-            //    AutoSize = true,
-            //    TabIndex = 3,
-            //    Text = "Näita pilti",
-            //    UseVisualStyleBackColor = true,
+                start = new Button
+                {
+                    AutoSize = true,
+                    Location = new System.Drawing.Point(250, 2),
+                    Size = new System.Drawing.Size(102, 23),
+                    TabIndex = 0,
+                    Text = "SlideShow start",
+                    UseVisualStyleBackColor = true,
+                };
+                this.start.Click += Start_Click;
+                tableLayoutPanel.Controls.Add(start);
+                tableLayoutPanel.Controls.Add(start, 2, 4);
 
-            //};
-            //    tableLayoutPanel.Controls.Add(showPicture);
-            //    this.showPicture.Click += new System.EventHandler(this.showPicture_Click);
+                stop = new Button
+                {
+                    AutoSize = true,
+                    Location = new System.Drawing.Point(250, 2),
+                    Size = new System.Drawing.Size(102, 23),
+                    TabIndex = 0,
+                    Text = "SlideShow stop",
+                    UseVisualStyleBackColor = true,
+                };
+                this.stop.Click += Stop_Click;
+                tableLayoutPanel.Controls.Add(stop);
+                tableLayoutPanel.Controls.Add(stop, 2, 5);
+                Button[] buttonsi = { start, stop, };
+                flowlayoutpanel1 = new FlowLayoutPanel
+                {
+                    Dock = DockStyle.Fill,
+                    FlowDirection = FlowDirection.LeftToRight,
+                    Size = new Size(200, 50),
+                };
+                flowlayoutpanel1.Controls.AddRange(buttonsi);
+                tableLayoutPanel.Controls.Add(flowlayoutpanel1, 2, 1);
+                this.Controls.Add(tableLayoutPanel);
+
+                timer1 = new Timer
+                {
+                    Interval = 1000,
+                };
+                timer1.Tick += timer1_Tick;
+
+                //Paint = new Button
+                //{
+                //    AutoSize = true,
+                //    TabIndex = 3,
+                //    Text = "Näita pilti",
+                //    UseVisualStyleBackColor = true,
+
+                //};
+                //    tableLayoutPanel.Controls.Add(showPicture);
+                //    this.showPicture.Click += new System.EventHandler(this.showPicture_Click);
 
                 openfiledialog = new OpenFileDialog
             {
@@ -216,14 +261,33 @@ namespace Piltform
 
         }
 
-        private void pictureBox2_Click_1(object sender, EventArgs e)
-        {
 
+
+
+        private void Start_Click(object sender, EventArgs e)
+        {
+            fbd = new FolderBrowserDialog();
+            fbd.ShowDialog();
+            timer1.Enabled = true;
+        }
+
+        private void Stop_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = false;
+            pictureBox.Image = null;
+        }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            pictureBox.ImageLocation = string.Format(fbd.SelectedPath + "\\img{0}.jpg", imgNum);
+            imgNum++;
+            if (imgNum == 3)
+                imgNum = 1;
         }
 
         private void clear_Click(object sender, EventArgs e)
         {
             pictureBox.Image = null;
+
         }
 
         private void CheckBox_CheckedChanged(object sender, EventArgs e)
@@ -242,34 +306,36 @@ namespace Piltform
                 pictureBox.BackColor = colordialog.Color;
             }
         }
-            private void Gray_Click(object sender, EventArgs e)
-            {
-                Bitmap copyBitmap = new Bitmap((Bitmap)picturebox.Image);
-                ProcessImage(copyBitmap);
-                picturebox.Image = copyBitmap;
-            }
+ //           private void Gray_Click(object sender, EventArgs e)
+ //           {
+  //              Bitmap copyBitmap = new Bitmap((Bitmap)picturebox.Image);
+  //              ProcessImage(copyBitmap);
+  //              picturebox.Image = copyBitmap;
+   //         }
 
-        public bool ProcessImage(Bitmap bmp)
-        {
-            for (int i = 0; i < bmp.Width; i++)
-            {
-                for (int j = 0; j < bmp.Height; j++)
-                {
-                    Color bmpColor = bmp.GetPixel(i, j);
-                    int red = bmpColor.R;
-                    int green = bmpColor.G;
-                    int blue = bmpColor.B;
-                    int gray = (byte)(.299 * red + .587 * green + .114 * blue);
-                    red = gray;
-                    green = gray;
-                    blue = gray;
-                    bmp.SetPixel(i, j, Color.FromArgb(red, green, blue));
-                }
-            }
-            return true;
+  //      public bool ProcessImage(Bitmap bmp)
+    //    {
+      //      for (int i = 0; i < bmp.Width; i++)
+        //    {
+          //      for (int j = 0; j < bmp.Height; j++)
+            //    {
+              //      Color bmpColor = bmp.GetPixel(i, j);
+                //    int red = bmpColor.R;
+                  //  int green = bmpColor.G;
+                    //int blue = bmpColor.B;
+                   // int gray = (byte)(.299 * red + .587 * green + .114 * blue);
+                   // red = gray;
+                   // green = gray;
+                    //blue = gray;
+                   // bmp.SetPixel(i, j, Color.FromArgb(red, green, blue));
+                //}
+            //}
+            //return true;
+
+
+            
+
         
-
-        }
     }
 }
 
