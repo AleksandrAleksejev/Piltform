@@ -1,7 +1,7 @@
 # Piltform
 В раздумиях<br>
 1)Piltform<br>
-1.1)<br>
+1.1)slide<br>
 1.2)Resize<br>
 1.3)muuta pildi varvi<br>
 2)MathQuiz<br>
