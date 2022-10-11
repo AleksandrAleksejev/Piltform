@@ -262,7 +262,7 @@ namespace Piltform
             else
             {
                 timer1.Stop();
-                using (var muusika = new SoundPlayer(@"..\..\theEnd.wav"))
+                using (var muusika = new SoundPlayer(@"..\..\Dollar.wav"))
                 {
                     muusika.Play();
                     lblTimer.Text = "See on kõik, rohkem aega ei anna!";
@@ -271,7 +271,24 @@ namespace Piltform
                 {
                     item.Enabled = false;
                 }
+                using (var muusika = new SoundPlayer(@"..\..\Dollar.wav"))
+                {
+                    muusika.Play();
+                }
+                var vastus = MessageBox.Show("See on kõik, rohkem aega ei anna!\nTahad veel proovida?", "Lõpp", MessageBoxButtons.YesNo);
+                if (vastus == DialogResult.Yes)
+                {
+                    MathQuiz nupp = new MathQuiz("Math Quiz");
+                    nupp.ShowDialog();
+                }
+                else if (vastus == DialogResult.No)
+                {
+                    MessageBox.Show(":");
+                    Close();
+                }
+                Close();
             }
+        
         }
         private void ButtonTimer_Click(object sender, EventArgs e) //nupufunktsioon, mis käivitab taimeri
         {

@@ -25,6 +25,7 @@ namespace Piltform
         OpenFileDialog openfiledialog;
         FlowLayoutPanel flowLayoutPanel;
         MathQuiz mathQuiz;
+        Bitmap _currentBitmap;
 
 
         public Pildid()
@@ -42,7 +43,11 @@ namespace Piltform
             puu.AfterSelect += Puu_AfterSelect;
             puu.Nodes.Add(oksad);
             this.Controls.Add(puu);
+
+
         }
+
+
         private void Puu_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Text == "Pildid")
@@ -95,7 +100,18 @@ namespace Piltform
                 Dock = System.Windows.Forms.DockStyle.Fill,
 
             };
-            checkBox.CheckedChanged += new System.EventHandler(CheckBox_CheckedChanged);
+                checkBox = new CheckBox
+                {
+                    AutoSize = true,
+                    Location = new System.Drawing.Point(150, 278),
+                    TabIndex = 1,
+                    UseVisualStyleBackColor = true,
+                    Text = "Muuda Grayscale",
+                    Dock = System.Windows.Forms.DockStyle.Fill,
+
+                };
+
+                checkBox.CheckedChanged += new System.EventHandler(CheckBox_CheckedChanged);
             tableLayoutPanel.Controls.Add(checkBox);
 
             close_btn = new Button
@@ -223,6 +239,25 @@ namespace Piltform
             {
                 pictureBox.BackColor = colordialog.Color;
             }
+        }
+        public void SetGrayscale()
+        {
+            Bitmap temp = (Bitmap)_currentBitmap;
+            Bitmap bmap = (Bitmap)temp.Clone();
+            Color c;
+            for (int i = 0; i < bmap.Width; i++)
+            {
+                for (int j = 0; j < bmap.Height; j++)
+                {
+                    c = bmap.GetPixel(i, j);
+                    byte gray = (byte)(.299 * c.R + .587 * c.G + .114 * c.B);
+
+                    bmap.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
+                }
+            }
+            _currentBitmap = (Bitmap)bmap.Clone();
+
+
         }
     }
 
