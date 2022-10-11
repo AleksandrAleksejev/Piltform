@@ -20,7 +20,7 @@ namespace Piltform
         TableLayoutPanel tableLayoutPanel;
         PictureBox pictureBox;
         CheckBox checkBox;
-        Button close_btn, bgColor, clear, showPicture,Paint;
+        Button close_btn, bgColor, clear, showPicture, gray;
         ColorDialog colordialog;
         OpenFileDialog openfiledialog;
         FlowLayoutPanel flowLayoutPanel;
@@ -100,16 +100,6 @@ namespace Piltform
                 Dock = System.Windows.Forms.DockStyle.Fill,
 
             };
-                checkBox = new CheckBox
-                {
-                    AutoSize = true,
-                    Location = new System.Drawing.Point(150, 278),
-                    TabIndex = 1,
-                    UseVisualStyleBackColor = true,
-                    Text = "Muuda Grayscale",
-                    Dock = System.Windows.Forms.DockStyle.Fill,
-
-                };
 
                 checkBox.CheckedChanged += new System.EventHandler(CheckBox_CheckedChanged);
             tableLayoutPanel.Controls.Add(checkBox);
@@ -139,7 +129,19 @@ namespace Piltform
             tableLayoutPanel.Controls.Add(bgColor);
             this.bgColor.Click += new System.EventHandler(this.bgColor_Click);
 
-            clear = new Button
+                gray = new Button
+                {
+                    AutoSize = true,
+                    Location = new Point(373, 3),
+                    Size = new Size(75, 23),
+                    TabIndex = 5,
+                    Text = "Change photo color to Gray",
+                    UseVisualStyleBackColor = true,
+                };
+                gray.Click += new EventHandler(Gray_Click);
+
+
+                clear = new Button
             {
                 AutoSize = true,
                 TabIndex = 2,
@@ -178,7 +180,7 @@ namespace Piltform
                 Filter = "JPEG Files (*.jpg)|*.jpg|PNG Files (*.png)|*.png|BMP Files (*.bmp)|*.bmp|All file" + "s (*.*)|*.*",
 
             };
-                Button[] buttons = { clear, showPicture, bgColor };
+                Button[] buttons = { clear, showPicture, bgColor , gray };
                 flowLayoutPanel = new FlowLayoutPanel
                 {
                     Dock = DockStyle.Fill,
@@ -240,25 +242,34 @@ namespace Piltform
                 pictureBox.BackColor = colordialog.Color;
             }
         }
-        public void SetGrayscale()
-        {
-            Bitmap temp = (Bitmap)_currentBitmap;
-            Bitmap bmap = (Bitmap)temp.Clone();
-            Color c;
-            for (int i = 0; i < bmap.Width; i++)
+            private void Gray_Click(object sender, EventArgs e)
             {
-                for (int j = 0; j < bmap.Height; j++)
-                {
-                    c = bmap.GetPixel(i, j);
-                    byte gray = (byte)(.299 * c.R + .587 * c.G + .114 * c.B);
+                Bitmap copyBitmap = new Bitmap((Bitmap)picturebox.Image);
+                ProcessImage(copyBitmap);
+                picturebox.Image = copyBitmap;
+            }
 
-                    bmap.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
+        public bool ProcessImage(Bitmap bmp)
+        {
+            for (int i = 0; i < bmp.Width; i++)
+            {
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    Color bmpColor = bmp.GetPixel(i, j);
+                    int red = bmpColor.R;
+                    int green = bmpColor.G;
+                    int blue = bmpColor.B;
+                    int gray = (byte)(.299 * red + .587 * green + .114 * blue);
+                    red = gray;
+                    green = gray;
+                    blue = gray;
+                    bmp.SetPixel(i, j, Color.FromArgb(red, green, blue));
                 }
             }
-            _currentBitmap = (Bitmap)bmap.Clone();
-
+            return true;
+        
 
         }
     }
-
 }
+
