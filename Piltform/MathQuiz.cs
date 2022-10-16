@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Media;
@@ -40,7 +41,7 @@ namespace Piltform
         }
 
         private TextBox Answer1, Answer2, Answer3, Answer4;
-        private Button button1, buttonTimer;
+        private Button button1, buttonTimer, kalkulator;
         Label[] labelSymArray = { }, lblNumArrayA = { }, lblNumArrayB = { }, lblEqualsArray = { };
         TextBox[] AnswerArray = { };
         int[] totalArray = { };
@@ -51,7 +52,7 @@ namespace Piltform
         {
             StartGame();
         }
-        internal void StartGame() //funktsioon kuvab menüü eraldi aknas, mis kirjutati tagasi MinuVormis
+        internal void StartGame() 
         {
             SuspendLayout();
             ClientSize = new Size(450, 400);
@@ -69,7 +70,7 @@ namespace Piltform
             int i = 0;
 
 
-            table = new TableLayoutPanel //Kogu tabeli loomine, milles asuvad tulevikus kõik sildid, nupud jne
+            table = new TableLayoutPanel 
             {
                 ColumnCount = 5,
                 RowCount = 5,
@@ -80,7 +81,7 @@ namespace Piltform
                 Location = new Point(0, 0),
             };
 
-            lblScore = new Label //sildi "Score" loomine, mis näitab punkte õigesti vastatud 4 näite eest
+            lblScore = new Label 
             {
                 AutoSize = true,
                 ForeColor = Color.MediumOrchid,
@@ -88,10 +89,10 @@ namespace Piltform
                 Name = "lblScore",
                 Size = new Size(50, 15),
                 TabIndex = 0,
-                Text = "Punktid:",
+                Text = ":",
             };
 
-            foreach (Label sym in lblNumArrayA) //silt, mis näitab enne mängu algust nulli numbrit
+            foreach (Label sym in lblNumArrayA) 
             {
                 lblNumArrayA[i] = new Label
                 {
@@ -106,7 +107,7 @@ namespace Piltform
             }
             i = 0;
 
-            foreach (Label sym in labelSymArray) //silt, mis näitab matemaatilist märki
+            foreach (Label sym in labelSymArray) 
             {
                 labelSymArray[i] = new Label
                 {
@@ -121,7 +122,7 @@ namespace Piltform
             }
             i = 0;
 
-            foreach (Label sym in lblNumArrayB) //silt, mis näitab enne mängu algust nulli numbrit
+            foreach (Label sym in lblNumArrayB) 
             {
                 lblNumArrayB[i] = new Label
                 {
@@ -136,7 +137,7 @@ namespace Piltform
             }
             i = 0;
 
-            foreach (Label sym in lblEqualsArray) //silt, mis näitab matemaatilist märki
+            foreach (Label sym in lblEqualsArray) 
             {
                 lblEqualsArray[i] = new Label
                 {
@@ -151,7 +152,7 @@ namespace Piltform
             }
             i = 0;
 
-            lblAnswer = new Label //sildi loomine vastuste sisestamiseks
+            lblAnswer = new Label 
             {
                 AutoSize = true,
                 Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold, GraphicsUnit.Point, 200),
@@ -162,7 +163,7 @@ namespace Piltform
                 Text = "",
             };
 
-            foreach (TextBox sym in AnswerArray) //tekstikast, mis aktsepteerib vastuseid
+            foreach (TextBox sym in AnswerArray) 
             {
                 AnswerArray[i] = new TextBox
                 {
@@ -176,7 +177,7 @@ namespace Piltform
             }
             i = 0;
 
-            button1 = new Button //nupu Kontroll loomine, mis toimib vastuste õigsuse kontrollina.
+            button1 = new Button 
             {
                 Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Italic, GraphicsUnit.Point, 200),
                 Location = new Point(290, 40),
@@ -187,8 +188,18 @@ namespace Piltform
                 UseVisualStyleBackColor = true,
                 Enabled = false,
             };
+            kalkulator = new Button
+            {
+                AutoSize = true,
+                ForeColor = Color.IndianRed,
+                Location = new Point(10, 10),
+                Size = new Size(50, 15),
+                TabIndex = 0,
+                Text = "Kalkulaator",
+            };
+            kalkulator.Click += Kalc_Click;
 
-            buttonTimer = new Button //taimeri nupu loomine, vajutamisel kuvatakse näited ja algab aja lugemine
+            buttonTimer = new Button 
             {
                 Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Italic, GraphicsUnit.Point, 200),
                 Location = new Point(290, 40),
@@ -199,7 +210,7 @@ namespace Piltform
                 UseVisualStyleBackColor = true,
             };
 
-            lblTimer = new Label //sildi loomine, milles kuvatakse taimerit, on sildil algselt enne alusta nupu vajutamist tekst "--:--:--"
+            lblTimer = new Label 
             {
                 AutoSize = true,
                 Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Italic, GraphicsUnit.Point, 200),
@@ -213,7 +224,7 @@ namespace Piltform
                 Interval = 1000
             };
 
-            //kõigi siltide, nuppude jms kuvamine laual
+            
 
             Controls.Add(table);
 
@@ -248,11 +259,12 @@ namespace Piltform
             table.Controls.Add(lblScore, 4, 4);
             table.Controls.Add(button1, 4, 4);
             table.Controls.Add(buttonTimer, 4, 5);
+            table.Controls.Add(kalkulator);
             table.Controls.Add(lblTimer);
 
         }
 
-        private void timer1_Tick(object sender, EventArgs e) //taimeri funktsioon, mis aktiveeritakse nupuga ja pärast aja möödumist, kui inimene ei vastanud, annab vastuse
+        private void timer1_Tick(object sender, EventArgs e) 
         {
             if (counter > 0)
             {
@@ -290,7 +302,11 @@ namespace Piltform
             }
         
         }
-        private void ButtonTimer_Click(object sender, EventArgs e) //nupufunktsioon, mis käivitab taimeri
+        private void Kalc_Click(object sender, EventArgs e)
+        {
+            Process.Start("calc");
+        }
+        private void ButtonTimer_Click(object sender, EventArgs e) 
         {
             Game();
             buttonTimer.Enabled = true;
@@ -299,7 +315,7 @@ namespace Piltform
             timer1.Start();
         }
 
-        private void CheckAnswer(object sender, EventArgs e) //vastuste kontrollimise funktsioon
+        private void CheckAnswer(object sender, EventArgs e) 
         {
             for (int i = 0; i < 4; i++)
             {
@@ -311,7 +327,7 @@ namespace Piltform
             }
         }
 
-        private void CheckButtonClickEvent(object sender, EventArgs e) //vastuste kontrollimise funktsioon, sisestamata andmete korral keeldub kontrollimast või lõpetab
+        private void CheckButtonClickEvent(object sender, EventArgs e) 
         {
 
             for (int i = 0; i < 4; i++)
@@ -341,7 +357,7 @@ namespace Piltform
                 lblAnswer.Text = "Õige!";
                 lblAnswer.ForeColor = Color.Green;
                 score += 1;
-                lblScore.Text = "Punktid: " + score;
+                lblScore.Text = ": " + score;
                 Game();
             }
             else
@@ -352,7 +368,7 @@ namespace Piltform
             correct = 0;
         }
 
-        private void Game() //funktsioon mängu alustamiseks, mis alguses määrab juhuslikud numbrid ja ka märgid
+        private void Game() 
         {
             for (int ii = 0; ii < 4; ii++)
             {

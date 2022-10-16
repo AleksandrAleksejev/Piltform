@@ -1,9 +1,9 @@
-﻿using Piltform;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Media;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,10 +15,12 @@ namespace Piltform
         string title;
         Random rnd = new Random();
         TableLayoutPanel table;
+        Label lblTimer;
+        int counter = 1;
         Label firstClicked = null;
         Label secondClicked = null;
         Timer timer1 = new Timer { Interval = 750 };
-        List<string> icons = new List<string>() //väärtuste loend, mis ilmuvad hiljem
+        List<string> icons = new List<string>() 
         {
             "!", "!", "N", "N", ",", ",", "k", "k",
             "b", "b", "v", "v", "w", "w", "z", "z"
@@ -28,27 +30,28 @@ namespace Piltform
             CenterToScreen();
             timer1.Tick += Tick;
             Text = "Matching game";
-            ClientSize = new Size(1200, 600);
+            ClientSize = new Size(550, 550);
             table = new TableLayoutPanel
             {
                 BackColor = Color.Pink,
                 Dock = DockStyle.Fill,
                 CellBorderStyle = TableLayoutPanelCellBorderStyle.Inset,
-                RowCount = 4,
-                ColumnCount = 4
+                RowCount = 5,
+                ColumnCount = 5
             };
 
             this.Controls.Add(table);
             for (int i = 0; i < 4; i++)
             {
-                table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-                table.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+                table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 for (int j = 0; j < 4; j++)
                 {
 
                     Label lbl = new Label
                     {
-                        BackColor = Color.Pink,
+                        BackColor = Color.LightCyan,
+                        Size = new Size(100, 100),
                         AutoSize = false,
                         Dock = DockStyle.Fill,
                         TextAlign = ContentAlignment.MiddleCenter,
@@ -58,6 +61,7 @@ namespace Piltform
 
                     table.Controls.Add(lbl, i, j);
                 };
+                
 
             }
             foreach (Control control in table.Controls)
@@ -72,11 +76,21 @@ namespace Piltform
                 iconLabel.ForeColor = iconLabel.BackColor;
                 iconLabel.Click += Click;
             }
+            lblTimer = new Label 
+            {
+                AutoSize = true,
+                Font = new Font("Microsoft Sans Serif", 12, FontStyle.Italic, GraphicsUnit.Point, 200),
+                Name = "lblAnswer",
+                Size = new Size(100, 35),
+                TabIndex = 7,
+                Text = "--:--:--",
+            };
+            table.Controls.Add(lblTimer, 0, 4);
 
         }
 
 
-        private void Click(object sender, EventArgs e) //ikooni kuvamiseks
+        private void Click(object sender, EventArgs e) 
         {
             if (timer1.Enabled == true)
                 return;
@@ -102,7 +116,12 @@ namespace Piltform
         }
         private void Tick(object sender, EventArgs e) //taimeri funktsioon
         {
-
+            timer1.Start();
+            if (counter > 0)
+            {
+                counter = counter + 1;
+                lblTimer.Text = counter + " liigutada";
+            }
             if (firstClicked.Text == secondClicked.Text)
             {
                 firstClicked.ForeColor = firstClicked.ForeColor;
@@ -118,7 +137,7 @@ namespace Piltform
             timer1.Stop();
             Kontroll();
         }
-        private void Kontroll() //kontrolli funktsioon
+        private void Kontroll() 
         {
             foreach (Control control in table.Controls)
             {
@@ -131,10 +150,22 @@ namespace Piltform
                 }
             }
 
-            using (var muusika = new SoundPlayer(@"..\..\end.wav"))
+            using (var muusika = new SoundPlayer(@"..\..\Dollar.wav"))
             {
                 MessageBox.Show("Õnnitleme, olete kõik leidnud!");
                 muusika.Stop();
+                Close();
+            }
+            var vastus = MessageBox.Show("tahad uuesti mangida!", "Lõpp", MessageBoxButtons.YesNo);
+            if (vastus == DialogResult.Yes)
+            {
+                this.Close();
+                MatchingGame el = new MatchingGame("Matching Game");
+                el.ShowDialog();
+            }
+            else if (vastus == DialogResult.No)
+            {
+                MessageBox.Show("Ok, bye");
                 Close();
             }
         }
@@ -142,9 +173,7 @@ namespace Piltform
         private void InitializeComponent()
         {
             this.SuspendLayout();
-            // 
-            // MatchingGame
-            // 
+            
             this.ClientSize = new System.Drawing.Size(282, 353);
             this.Name = "MatchingGame";
             this.Load += new System.EventHandler(this.MatchingGame_Load);
@@ -152,9 +181,11 @@ namespace Piltform
 
         }
 
+
         private void MatchingGame_Load(object sender, EventArgs e)
         {
 
         }
+
     }
 }
