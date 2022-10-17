@@ -90,6 +90,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dollar.wav" />
+    <Content Include="pilt1.jpg" />
+    <Content Include="pilt2.jpg" />
+    <Content Include="pilt3.jpg" />
+    <Content Include="pilt4.jpg" />
+    <Content Include="plenka.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

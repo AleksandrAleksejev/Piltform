@@ -20,6 +20,7 @@ namespace Piltform
         private int counter = 60;
         private Timer timer1;
         private Label lblScore;
+        private Button music;
         private Label lblTimer, lblSym1, lblSym2, lblSym3, lblSym4, lblNumB1, lblNumB2, lblNumB3, lblNumB4, lblE1, lblE2, lblE3, lblE4, lblAnswer, lblNumA1, lblNumA2, lblNumA3, lblNumA4;
 
         private void MathQuiz_Load(object sender, EventArgs e)
@@ -33,7 +34,7 @@ namespace Piltform
             // 
             // MathQuiz
             // 
-            this.ClientSize = new System.Drawing.Size(282, 253);
+            this.ClientSize = new System.Drawing.Size(300, 300);
             this.Name = "MathQuiz";
             this.Load += new System.EventHandler(this.MathQuiz_Load);
             this.ResumeLayout(false);
@@ -41,7 +42,7 @@ namespace Piltform
         }
 
         private TextBox Answer1, Answer2, Answer3, Answer4;
-        private Button button1, buttonTimer, kalkulator;
+        private Button button1, buttonTimer, kalkulator ,notepad;
         Label[] labelSymArray = { }, lblNumArrayA = { }, lblNumArrayB = { }, lblEqualsArray = { };
         TextBox[] AnswerArray = { };
         int[] totalArray = { };
@@ -89,7 +90,7 @@ namespace Piltform
                 Name = "lblScore",
                 Size = new Size(50, 15),
                 TabIndex = 0,
-                Text = ":",
+                Text = "punktid:",
             };
 
             foreach (Label sym in lblNumArrayA) 
@@ -101,7 +102,7 @@ namespace Piltform
                     Name = "lblNumA",
                     Size = new Size(50, 35),
                     TabIndex = 1,
-                    Text = "00",
+                    Text = "?",
                 };
                 i++;
             }
@@ -131,7 +132,7 @@ namespace Piltform
                     Name = "lblNumB",
                     Size = new Size(50, 35),
                     TabIndex = 3,
-                    Text = "00"
+                    Text = "?"
                 };
                 i++;
             }
@@ -199,6 +200,30 @@ namespace Piltform
             };
             kalkulator.Click += Kalc_Click;
 
+            music = new Button 
+            {
+                Location = new Point(10, 10),
+                Size = new Size(50, 25),
+                TabIndex = 0,
+                Text = "Muusika",
+                ForeColor = Color.IndianRed,
+
+            };
+            music.Click += new EventHandler(MusicStart);
+        
+        
+
+        notepad = new Button
+            {
+                AutoSize = true,
+                ForeColor = Color.IndianRed,
+                Location = new Point(10, 10),
+                Size = new Size(50, 15),
+                TabIndex = 0,
+                Text = "Notepad",
+            };
+            notepad.Click += Note_Click;
+
             buttonTimer = new Button 
             {
                 Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Italic, GraphicsUnit.Point, 200),
@@ -209,6 +234,8 @@ namespace Piltform
                 Text = "Alusta",
                 UseVisualStyleBackColor = true,
             };
+
+            
 
             lblTimer = new Label 
             {
@@ -260,6 +287,8 @@ namespace Piltform
             table.Controls.Add(button1, 4, 4);
             table.Controls.Add(buttonTimer, 4, 5);
             table.Controls.Add(kalkulator);
+            table.Controls.Add(notepad);
+            table.Controls.Add(music);
             table.Controls.Add(lblTimer);
 
         }
@@ -306,6 +335,10 @@ namespace Piltform
         {
             Process.Start("calc");
         }
+        private void Note_Click(object sender, EventArgs e)
+        {
+            Process.Start("notepad");
+        }
         private void ButtonTimer_Click(object sender, EventArgs e) 
         {
             Game();
@@ -324,6 +357,14 @@ namespace Piltform
                     MessageBox.Show("Ainult numbrid!");
                     AnswerArray[i].Text = AnswerArray[i].Text.Remove(AnswerArray[i].Text.Length - 1);
                 }
+            }
+        }
+
+        private void MusicStart(object sender, EventArgs e) //funktsioon mis alustab muusika nuppude vajude
+        {
+            using (var muusika = new SoundPlayer(@"..\..\plenka.wav"))
+            {
+                muusika.Play();
             }
         }
 
@@ -367,6 +408,7 @@ namespace Piltform
             }
             correct = 0;
         }
+
 
         private void Game() 
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Media;
@@ -15,8 +16,10 @@ namespace Piltform
         string title;
         Random rnd = new Random();
         TableLayoutPanel table;
-        Label lblTimer;
+        Label lblTimer, lblTimer1;
         int counter = 1;
+        private Button music;
+        private Button note;
         Label firstClicked = null;
         Label secondClicked = null;
         Timer timer1 = new Timer { Interval = 750 };
@@ -82,10 +85,34 @@ namespace Piltform
                 Font = new Font("Microsoft Sans Serif", 12, FontStyle.Italic, GraphicsUnit.Point, 200),
                 Name = "lblAnswer",
                 Size = new Size(100, 35),
-                TabIndex = 7,
+                TabIndex = 5,
                 Text = "--:--:--",
             };
             table.Controls.Add(lblTimer, 0, 4);
+
+            music = new Button 
+            {
+                Location = new Point(290, 40),
+                Size = new Size(80, 45),
+                TabIndex = 7,
+                Text = "Muusika",
+                UseVisualStyleBackColor = true,
+            };
+            music.Click += new EventHandler(MusicStart);
+            table.Controls.Add(music, 3, 4);
+
+
+            note = new Button 
+            {
+                Location = new Point(290, 40),
+                Name = "button1",
+                Size = new Size(80, 45),
+                TabIndex = 7,
+                Text = "Notepad",
+                UseVisualStyleBackColor = true,
+            };
+            note.Click += new EventHandler(Note_Click);
+            table.Controls.Add(note, 2, 4);
 
         }
 
@@ -137,6 +164,7 @@ namespace Piltform
             timer1.Stop();
             Kontroll();
         }
+
         private void Kontroll() 
         {
             foreach (Control control in table.Controls)
@@ -149,13 +177,10 @@ namespace Piltform
                         return;
                 }
             }
+            
+        
 
-            using (var muusika = new SoundPlayer(@"..\..\Dollar.wav"))
-            {
-                MessageBox.Show("Õnnitleme, olete kõik leidnud!");
-                muusika.Stop();
-                Close();
-            }
+            
             var vastus = MessageBox.Show("tahad uuesti mangida!", "Lõpp", MessageBoxButtons.YesNo);
             if (vastus == DialogResult.Yes)
             {
@@ -182,10 +207,24 @@ namespace Piltform
         }
 
 
+
+
         private void MatchingGame_Load(object sender, EventArgs e)
         {
 
         }
+        private void MusicStart(object sender, EventArgs e) //funktsioon mis alustab muusika nuppude vajude
+        {
+            using (var muusika = new SoundPlayer(@"..\..\Dollar.wav"))
+            {
+                muusika.Play();
+            }
+        }
+        private void Note_Click(object sender, EventArgs e)
+        {
+            Process.Start("notepad");
+        }
+        
 
     }
 }
