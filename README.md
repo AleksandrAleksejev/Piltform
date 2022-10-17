@@ -10,7 +10,7 @@
 2.2)ma lisata muusika(confirm)<br>
 2.3)kalkulaator<br>
 2.4)notepad<br>
-2.5)muusika mangu lopus<br>
+2.5)muusika esitamise nupp<br>
 3)MatchingGame<br>
 3.1)Muusika<br>
 3.2)kaikude arv<br>
